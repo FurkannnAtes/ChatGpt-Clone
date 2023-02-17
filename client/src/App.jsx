@@ -2,7 +2,7 @@ import { FiSend } from "react-icons/fi";
 import { TbRobot } from "react-icons/tb";
 import { BiUser } from "react-icons/bi";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation } from "react-query";
 import { fetchResponse } from "./api";
 
@@ -10,7 +10,10 @@ function App() {
   const [chat, setChat] = useState([]);
   const [value, setValue] = useState("");
   const [load, setLoad] = useState(false);
-
+  const wrapperRef = useRef(null);
+  useEffect(() => {
+    wrapperRef.current.scrollTop = wrapperRef.current.scrollHeight;
+  }, [chat]);
   const mutation = useMutation({
     mutationFn: () => {
       setLoad(true);
@@ -40,7 +43,10 @@ function App() {
       <div className="text-white w-fit text-4xl font-semibold">
         ChatGPT Clone
       </div>
-      <div className="h-[75vh] overflow-y-auto w-full md:w-10/12 lg:w-8/12 mt-auto pr-2  flex flex-col gap-0 chat-wrapper">
+      <div
+        ref={wrapperRef}
+        className="h-[75vh] overflow-y-auto w-full md:w-10/12 lg:w-8/12 mt-auto pr-2  flex flex-col gap-0 chat-wrapper "
+      >
         {chat?.map((message, i) => (
           <div
             key={i}
